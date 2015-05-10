@@ -65,7 +65,7 @@ def get_all_links(page):
 def add_to_index(index, keyword, url):
     for entry in index:
         if entry[0] == keyword:
-            if url not in entry[1]: # don't add url if it is already there
+            if not url in entry[1]: # don't add url if it is already there
                 entry[1].append(url)
             return
     # not found, add new keyword to index
