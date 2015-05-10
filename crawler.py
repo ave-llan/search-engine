@@ -1,20 +1,21 @@
 from sys import argv
-import urllib2
+import urllib
 from urlparse import urljoin
 
 script, seedPage = argv
+
+# tries to read a page and return the contents
+def read_page(url):
+    try:
+        return urllib.urlopen(url).read()
+    except:
+        return ""
 
 # appends elements of q to p if not already in p
 def union(p,q):
     for e in q:
         if e not in p:
             p.append(e)
-
-# returns the html of a page from given url
-def read_page(url):
-    req = urllib2.Request(url)
-    response = urllib2.urlopen(req)
-    return response.read()
 
 # returns the first link on a page
 def get_next_target(page):
@@ -66,11 +67,14 @@ def add_page_to_index(index, url, content):
 
 # returns an index after crawling pages reachable from seed page
 def crawl_web(seed):
+    count = 0
     tocrawl = [seed]
     crawled = []
     index = []
-    while to_be_crawled:
-        page = to_be_crawled.pop()
+    while tocrawl:
+        page = tocrawl.pop()
+        print count, page
+        count += 1
         if page not in crawled:
             content = read_page(page)
             add_page_to_index(index, page, content)
