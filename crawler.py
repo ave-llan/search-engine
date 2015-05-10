@@ -38,23 +38,6 @@ def get_all_links(page):
             break
     return links
 
-# returns a list of links reachable from the seed page
-def crawl_web(seed_url):
-    count = 0
-    to_be_crawled = [seed_url]
-    crawled = []
-    while to_be_crawled:
-        nextLink = to_be_crawled.pop()
-        crawled.append(nextLink)
-        print 'Crawling #', count, ':', nextLink
-        count += 1
-        links = get_all_links(read_page(nextLink))
-        for link in links:
-            if link[0:4] != 'http':
-                link = urljoin(nextLink, link)
-            if link not in crawled:
-                to_be_crawled.append(link)
-    return crawled
 
 # mutates a provided index
 # if keyword already in index, adds url to the keyword's list of urls
@@ -76,11 +59,24 @@ def lookup(index,keyword):
     return []
 
 # extracts keywords from a page and adds them to the index with associated page
-def add_page_to_index(index,url,content):
+def add_page_to_index(index, url, content):
     keywords = content.split()
     for keyword in keywords:
         add_to_index(index, keyword, url)
 
+# returns an index after crawling pages reachable from seed page
+def crawl_web(seed):
+    tocrawl = [seed]
+    crawled = []
+    index = []
+    while to_be_crawled:
+        page = to_be_crawled.pop()
+        if page not in crawled:
+            content = read_page(page)
+            add_page_to_index(index, page, content)
+            union(tocrawl, get_all_links(content))
+            crawled.append(page)
+    return index
 
 
 
