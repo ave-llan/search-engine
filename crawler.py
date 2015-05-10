@@ -4,18 +4,37 @@ from urlparse import urljoin
 
 script, seedPage = argv
 
+
+#HELPER FUNCTIONS
+# appends elements of q to p if not already in p
+def union(p,q):
+    for e in q:
+        if e not in p:
+            p.append(e)
+
+#splits a string using all characters specified in splitlist (a string of characters)
+def split_string(source,splitlist):
+    output = []
+    atsplit = True # At a split point from splitlist
+    for char in source:
+        if char in splitlist:
+            atsplit = True
+        else:
+            if atsplit:
+                output.append(char)
+                atsplit = False
+            else: 
+                #add char to last word
+                output[-1] = output[-1] + char
+    return output
+
+
 # tries to read a page and return the contents
 def read_page(url):
     try:
         return urllib.urlopen(url).read()
     except:
         return ""
-
-# appends elements of q to p if not already in p
-def union(p,q):
-    for e in q:
-        if e not in p:
-            p.append(e)
 
 # returns the first link on a page
 def get_next_target(page):
