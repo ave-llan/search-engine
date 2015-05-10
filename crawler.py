@@ -62,12 +62,13 @@ def get_all_links(page):
 # mutates a provided index
 # if keyword already in index, adds url to the keyword's list of urls
 # else adds the keyword with its url to the index
-def add_to_index(index,keyword,url):
-    # if in index, add url
+def add_to_index(index, keyword, url):
     for entry in index:
         if entry[0] == keyword:
-            entry[1].append(url)
+            if url not in entry[1]: # don't add url if it is already there
+                entry[1].append(url)
             return
+    # not found, add new keyword to index
     index.append([keyword, [url]])
 
 # returns a list of urls associated with the given keyword
