@@ -29,3 +29,15 @@ def hashtable_lookup(htable,key):
 # adds value to hashtable
 def hashtable_add(htable,key,value):
     hashtable_get_bucket(htable,key).append([key,value])
+
+# if key is not present, adds it to table. Else, updates keys value to new value.
+def hashtable_update(htable,key,value):
+    if not hashtable_lookup(htable, key) == None:
+        bucket = hashtable_get_bucket(htable, key)
+        for entry in bucket:
+            if entry[0] == key:
+                entry[1] = value
+                break
+    else:
+        hashtable_add(htable, key, value)
+    return htable
