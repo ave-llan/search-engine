@@ -98,7 +98,18 @@ def crawl_web(seed): # returns index, graph of outlinks
             crawled.append(page)
     return index, graph
 
-
+# returns the highest ranked page for the given keyword, or None if keyword not present
+def lucky_search(index, ranks, keyword):
+    if keyword in index:
+        pages = index[keyword]
+        bestrank = 0
+        bestpage = ""
+        for page in pages:
+            if ranks[page] > bestrank:
+                bestrank = ranks[page]
+                bestpage = page
+        return bestpage
+    return None
 
 foundLinks = crawl_web(seedPage)
 for link in foundLinks:
