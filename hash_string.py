@@ -1,6 +1,11 @@
-# given a hashtable, returns bucket where keyword would be located
-def hashtable_get_bucket(htable,keyword):
-    return htable[hash_string(keyword, len(htable))]
+
+
+# returns a list of nbuckets
+def make_hashtable(nbuckets):
+    table = []
+    for unused in range(0, nbuckets):
+        table.append([])
+    return table
 
 # returns hash for this string
 def hash_string(keyword, buckets):
@@ -9,9 +14,18 @@ def hash_string(keyword, buckets):
         h = (h + ord(c)) % buckets
     return h
 
-# returns a list of nbuckets
-def make_hashtable(nbuckets):
-    table = []
-    for unused in range(0, nbuckets):
-        table.append([])
-    return table
+# given a hashtable, returns bucket where keyword would be located
+def hashtable_get_bucket(htable,keyword):
+    return htable[hash_string(keyword, len(htable))]
+
+# returns value associated with given key if key is present, else returns None
+def hashtable_lookup(htable,key):
+    bucket = hashtable_get_bucket(htable, key)
+    for item in bucket:
+        if item[0] == key:
+            return item[1]
+    return None
+
+# adds value to hashtable
+def hashtable_add(htable,key,value):
+    hashtable_get_bucket(htable,key).append([key,value])
