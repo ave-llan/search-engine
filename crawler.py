@@ -82,21 +82,21 @@ def add_page_to_index(index, url, content):
         add_to_index(index, keyword, url)
 
 # returns an index after crawling pages reachable from seed page
-def crawl_web(seed):
-    count = 0
+def crawl_web(seed): # returns index, graph of outlinks
     tocrawl = [seed]
     crawled = []
-    index = {}
-    while tocrawl:
+    graph = {}  # <url>:[list of pages it links to]
+    index = {} 
+    while tocrawl: 
         page = tocrawl.pop()
-        print count, page
-        count += 1
         if page not in crawled:
             content = read_page(page)
             add_page_to_index(index, page, content)
-            union(tocrawl, get_all_links(content))
+            outlinks = get_all_links(content)
+            graph[page] = outlinks
+            union(tocrawl, outlinks)
             crawled.append(page)
-    return index
+    return index, graph
 
 
 
