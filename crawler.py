@@ -1,19 +1,17 @@
 from sys import argv
 import urllib
-from urlparse import urljoin
 
-script, seedPage = argv
-
+_SCRIPT, SEED_PAGE = argv
 
 #HELPER FUNCTIONS
 # appends elements of q to p if not already in p
-def union(p,q):
+def union(p, q):
     for e in q:
         if e not in p:
             p.append(e)
 
 #splits a string using all characters specified in splitlist (a string of characters)
-def split_string(source,splitlist):
+def split_string(source, splitlist):
     output = []
     atsplit = True # At a split point from splitlist
     for char in source:
@@ -23,7 +21,7 @@ def split_string(source,splitlist):
             if atsplit:
                 output.append(char)
                 atsplit = False
-            else: 
+            else:
                 #add char to last word
                 output[-1] = output[-1] + char
     return output
@@ -81,13 +79,13 @@ def add_page_to_index(index, url, content):
     for keyword in keywords:
         add_to_index(index, keyword, url)
 
-# returns an index after crawling pages reachable from seed page
+# returns an index after crawling pages reachable from SEED_PAGE page
 def crawl_web(seed): # returns index, graph of outlinks
     tocrawl = [seed]
     crawled = []
     graph = {}  # <url>:[list of pages it links to]
-    index = {} 
-    while tocrawl: 
+    index = {}
+    while tocrawl:
         page = tocrawl.pop()
         if page not in crawled:
             content = read_page(page)
@@ -111,6 +109,6 @@ def lucky_search(index, ranks, keyword):
         return bestpage
     return None
 
-foundLinks = crawl_web(seedPage)
-for link in foundLinks:
+found_links = crawl_web(SEED_PAGE)
+for link in found_links:
     print link

@@ -1,4 +1,4 @@
-# returns a dictionary of page rankings 
+# returns a dictionary of page rankings
 def compute_ranks(graph):
     d = 0.8 # damping factor
     numloops = 10 # number of levels to check
